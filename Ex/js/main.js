@@ -59,7 +59,7 @@ tm.main(function(){
 
         update: function(){
             if( app.keyboard.getKeyDown("Z") || app.pointing.getPointingStart() ){
-                this.addChild( tm.fade.FadeOut(
+                this.addChild( FadeOut(
                     SCREEN_WIDTH, SCREEN_HEIGHT, "#000", 1000, function(){
                         app.replaceScene(MainScene());
                     })
@@ -177,7 +177,7 @@ tm.main(function(){
                     this.bgm.stop();
                     
                     // ゲームオーバー
-                    this.addChild( tm.fade.FadeOut(
+                    this.addChild( FadeOut(
                         SCREEN_WIDTH, SCREEN_HEIGHT, "#000", 1000, function(){
                             app.replaceScene(EndScene());
                         })
@@ -254,7 +254,7 @@ tm.main(function(){
             titleButton.label.text = "Title";   // ボタンのテキスト
             this.addChild(titleButton);
             titleButton.onpointingstart = function(){  // ボタンを押した時の挙動
-                this.addChild( tm.fade.FadeOut(
+                this.addChild( FadeOut(
                     SCREEN_WIDTH, SCREEN_HEIGHT, "#000", 1000, function(){
                         app.replaceScene(TitleScene());
                     })
@@ -323,6 +323,37 @@ tm.main(function(){
         },
     }); 
     
+})(window);
+
+// フェード用
+(function(ns){
+    ns.FadeOut = tm.createClass({
+        superClass: tm.app.CanvasElement,
+        
+        init: function(width, height, color, time, func) {
+            this.superInit();
+            
+            this.setPosition(0, 0);
+            this.setSize(width, height);
+            
+            this.fillStyle = color;
+            this.alpha = 1.0;
+            this.animation.addTween({
+                prop: "alpha",
+                begin: 0.0,
+                finish: 1.0,
+                duration: time,
+                onfinish: function() {
+                    if (func) func();
+                    this.remove();
+                }.bind(this)
+            });
+        },
+        
+        draw: function(c) {
+            c.clearColor(this.fillStyle);
+        }
+    });
 })(window);
 
 /*
