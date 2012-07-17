@@ -1,5 +1,9 @@
 /*
- Twitterへの投稿
+ フェードの実装
+ this.animation.addTween({ });
+ 
+ iPhoneでの操作対応
+ 敵と弾の衝突演出
  */
  
 // スクリーンのサイズ
@@ -20,7 +24,7 @@ tm.util.DataManager.set("userData", {
 tm.main(function(){
     app = tm.app.CanvasApp("#world");
     app.background = "black";
-    app.enableStats();
+    //app.enableStats();
     app.fitWindow();
     
 	// ユーザーデータの生成
@@ -339,12 +343,12 @@ tm.main(function(){
             this.fillStyle = color;
             this.alpha = 1.0;
             this.animation.addTween({
-                prop: "alpha",
-                begin: 0.0,
-                finish: 1.0,
-                duration: time,
-                onfinish: function() {
-                    if (func) func();
+                prop: "alpha",  // alphaをアニメーション
+                begin: 0.0,     // alphaの開始の値
+                finish: 1.0,    // alphaの終了時の値
+                duration: time, // アニメーションの時間
+                onfinish: function() {  // アニメーション完了時の動作
+                    if (func){ func(); }
                     this.remove();
                 }.bind(this)
             });
