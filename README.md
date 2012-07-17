@@ -1,4 +1,5 @@
-# tmlib.jsのSTG制作チュートリアルです。
+# tmlib.js STG Tutorial.
+tmlib.jsを使ったシューティングゲームの制作チュートリアルです。
 
 ## 概要
 ほんの少しのJavaScriptの知識(と情熱)がある人向け。
