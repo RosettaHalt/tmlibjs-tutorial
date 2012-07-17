@@ -249,7 +249,7 @@ tm.main(function(){
                 type: "tweet",
                 text: "Score : {0}\n".format(userData.score),
                 hashtags: "tmlibjs",
-                url: "https://github.com/webrxr/RxR",
+                url: "http://bit.ly/O7R7gh",
             });
             var tweetButton = tm.app.iPhoneButton(120, 60, "black");
             tweetButton.setPosition(360, 640);   // ボタンの位置
