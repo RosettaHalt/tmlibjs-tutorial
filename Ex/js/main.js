@@ -1,21 +1,21 @@
 /*
  フェードの実装
  this.animation.addTween({ });
- 
+
  iPhoneでの操作対応
  敵と弾の衝突演出
  */
- 
+
 // スクリーンのサイズ
 var SCREEN_WIDTH = 480;
 var SCREEN_HEIGHT= 720;
- 
+
 // リソースのリスト
 tm.preload(function(){
     tm.sound.SoundManager.add("bgm", "sound/bgm/Loop_35", 1);
     tm.sound.SoundManager.add("shot", "sound/se/chargeshot");
 });
- 
+
 // ユーザーのデータ
 tm.util.DataManager.set("userData", {
     score: 0
@@ -26,7 +26,7 @@ tm.main(function(){
     app.background = "black";
     //app.enableStats();
     app.fitWindow();
-    
+
 	// ユーザーデータの生成
     userData = tm.util.DataManager.get("userData");
 
@@ -50,7 +50,7 @@ tm.main(function(){
             ]
         }
     };
-    
+
     ns.TitleScene = tm.createClass({
         superClass: tm.app.Scene,
 
@@ -85,10 +85,10 @@ tm.main(function(){
         c.setColorStyle("white", "rgba(200, 200, 200, 0.9)");
         c.fillPolygon(0, 0, 20, 3, 270);
         c.strokePolygon(0, 0, 20, 3, 270);
-    
+
         return c;
     })();
-    
+
     // エネミーのイメージ
     var enemyImage = (function(){
         var c = tm.graphics.Canvas();
@@ -100,7 +100,7 @@ tm.main(function(){
         c.strokeStar(0, 0, 20, 16, 0.6);
         return c;
     })();
-    
+
     // 弾のイメージ
     var bulletImage = (function(){
         var c = tm.graphics.Canvas();
@@ -108,10 +108,10 @@ tm.main(function(){
         c.setTransformCenter();
         c.setColorStyle("white", "white");
         c.fillCircle(0, 0, 5);
-    
+
         return c;
     })();
-    
+
     // ラベルのリスト
     var UI_DATA = {
         LABELS: {
@@ -142,7 +142,7 @@ tm.main(function(){
             this.player = Player(playerImage);
             this.player.position.set( SCREEN_WIDTH/2, 600 );
             this.addChild(this.player);
-            
+
             // 敵用グループ
             this.enemyGroup = null;
             this.enemyGroup = tm.app.CanvasElement();
@@ -162,7 +162,7 @@ tm.main(function(){
             this.bulletGroup = null;
             this.bulletGroup = tm.app.CanvasElement();
             this.addChild(this.bulletGroup);
-            
+
             // BGM
             this.bgm = tm.sound.SoundManager.get("bgm");
             this.bgm.loop = true;   // ループさせる
@@ -176,10 +176,10 @@ tm.main(function(){
                 if(this.player.isHitElement(enemy) == true){
                     console.log("hit");
                     enemy.remove();
-                    
+
                     // BGMの停止
                     this.bgm.stop();
-                    
+
                     // ゲームオーバー
                     this.addChild( FadeOut(
                         SCREEN_WIDTH, SCREEN_HEIGHT, "#000", 1000, function(){
@@ -192,11 +192,11 @@ tm.main(function(){
                     var bullet = this.bulletGroup.children[j];
                     if(enemy.isHitElement(bullet) == true){
                         console.log("bullet hit");
-                        
+
                         // 弾と敵の衝突演出
                         var crash = Crash(enemy.x, enemy.y, 30, enemyImage);
                         this.addChild(crash);
-                        
+
                         enemy.remove();
                         bullet.remove();
 
@@ -213,7 +213,7 @@ tm.main(function(){
                 var bullet = Bullet(bulletImage);
                 bullet.position.set(this.player.x, this.player.y-20);
                 this.bulletGroup.addChild( bullet );
-                
+
                 // ショット音
                 tm.sound.SoundManager.get("shot").play();
             }
@@ -229,7 +229,7 @@ tm.main(function(){
 
 // エンドシーン
 (function(ns){
-        
+
     // ラベルのリスト
     var UI_DATA = {
         LABELS: {
@@ -241,17 +241,17 @@ tm.main(function(){
                 }
             ]
         }
-    }    
+    }
     ns.EndScene = tm.createClass({
         superClass: tm.app.Scene,
-    
+
         init: function(){
             this.superInit();
-            
+
             // ラベル
             this.fromJSON(UI_DATA.LABELS);
             this.scoreLabel.text = "Score : " + userData.score;
-            
+
             // タイトルボタン
             var titleButton = tm.app.iPhoneButton(120, 60, "black");    // ボタンの読み込み
             titleButton.setPosition(120,640);   // ボタンの位置
@@ -280,7 +280,7 @@ tm.main(function(){
                 window.open(msg, "_self");  // メッセージをURLに渡しつつ開く
             };
         },
-    
+
         update: function(){
         }
     });
@@ -291,55 +291,55 @@ tm.main(function(){
 (function(ns){
     ns.PauseScene = tm.createClass({
         superClass: tm.app.Scene,
-        
+
         init: function(audio){
             this.superInit();
             this.interaction;
-            
+
             // 全画面にちょっと透ける黒いレイヤーを被せる
-            var filter = tm.app.Sprite(SCREEN_WIDTH, SCREEN_HEIGHT);
+            var filter = tm.app.Shape(SCREEN_WIDTH, SCREEN_HEIGHT);
             filter.setPosition(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
             filter.canvas.clearColor("rgba(0, 0, 0, 0.75)");
             this.addChild(filter);
-                
+
             app.stop();
-            
+
             // サウンドが流れていたら止める(サウンドについては後の章で)
-            this.audio = audio; 
+            this.audio = audio;
             if(this.audio){ this.audio.pause(); }
         },
-        
+
         // フォーカスが合えばアプリを動かす
         onfocus: function(){
             app.start();    // アプリ自体の更新を再開する
         },
-        
+
         // フォーカスが外れたらアプリを止める
         onblur: function(){
             app.stop();    // アプリ自体の更新を止める
         },
-        
+
         // クリックでポーズ画面を終了
         onmousedown: function(){
             // サウンドが流れていたらサウンドも再開
             if(this.audio){ this.audio.play(); }
             app.popScene();
         },
-    }); 
-    
+    });
+
 })(window);
 
 // フェード用
 (function(ns){
     ns.FadeOut = tm.createClass({
         superClass: tm.app.CanvasElement,
-        
+
         init: function(width, height, color, time, func) {
             this.superInit();
-            
+
             this.setPosition(0, 0);
             this.setSize(width, height);
-            
+
             this.fillStyle = color;
             this.alpha = 1.0;
             this.animation.addTween({
@@ -353,7 +353,7 @@ tm.main(function(){
                 }.bind(this)
             });
         },
-        
+
         draw: function(c) {
             c.clearColor(this.fillStyle);
         }
@@ -364,13 +364,14 @@ tm.main(function(){
  * プレイヤークラス
  */
 var Player = tm.createClass({
-    superClass: tm.app.Sprite,
+    superClass: tm.app.Shape,
 
     init: function(img){
-        this.superInit(40, 40, img);
+        this.superInit(40, 40);
+        this.canvas = img;
         this.speed = 0;
         this.velocity = tm.geom.Vector2(0, 0);
-        
+
         this.clickPos = {x:0, y:0};
     },
 
@@ -387,7 +388,7 @@ var Player = tm.createClass({
 
         // 摩擦
         this.speed *= 0.7;
-        
+
         if(app.pointing.getPointingStart()){
             this.clickPos.x = app.pointing.x;
             this.clickPos.y = app.pointing.y;
@@ -396,16 +397,16 @@ var Player = tm.createClass({
             // 移動量を調べる
             var x = app.pointing.x - this.clickPos.x;
             var y = app.pointing.y - this.clickPos.y;
-            
+
             // 移動させる
             this.x += x;
             this.y += y;
-            
+
             // 基点を更新
             this.clickPos.x = app.pointing.x;
             this.clickPos.y = app.pointing.y;
         }
-        
+
         if(this.x >= SCREEN_WIDTH){ this.x = SCREEN_WIDTH; }
         else if(this.x <= 0){ this.x = 0; }
         if(this.y >= SCREEN_HEIGHT){ this.y = SCREEN_HEIGHT; }
@@ -417,16 +418,17 @@ var Player = tm.createClass({
  * エネミークラス
  */
 var Enemy = tm.createClass({
-    superClass: tm.app.Sprite,
+    superClass: tm.app.Shape,
 
     init: function(img){
-        this.superInit(40, 40, img);
+        this.superInit(40, 40);
+        this.canvas = img;
     },
 
     update: function(){
         this.y += 4;
         this.rotation -= 4; // 回転
-        
+
         if(this.y > SCREEN_HEIGHT+this.height){ this.remove(); }
     }
 
@@ -436,15 +438,16 @@ var Enemy = tm.createClass({
  * 弾クラス
  */
 var Bullet = tm.createClass({
-    superClass: tm.app.Sprite,
+    superClass: tm.app.Shape,
 
     init: function(img){
-        this.superInit(10, 10, img);
+        this.superInit(10, 10);
+        this.canvas = img;
     },
 
     update: function(){
         this.y -= 16;
-        
+
         if(this.y <= -this.height){ this.remove(); }
     }
 });
@@ -453,21 +456,21 @@ var Bullet = tm.createClass({
  * クラッシュ
  */
 var Crash = tm.createClass({
-    
+
     superClass: tm.app.CanvasElement,
-    
+
     init: function(x, y, time, img){
         this.superInit();
         this.x = x;
         this.y = y;
         this.timer = time;
-        
+
         var self = this;
         for(var i = 0; i < 16; ++i){
-            var particle = tm.app.Sprite(40, 40);
+            var particle = tm.app.Shape(40, 40);
             particle.scaleX = particle.scaleY = 0.5;
             particle.v = tm.geom.Vector2.random(0, 360, 2);
-            particle.setImage(img);
+            particle.canvas = img;
             particle.blendMode = "lighter";
             particle.update = function(){
                 this.x += this.v.x;
@@ -478,7 +481,7 @@ var Crash = tm.createClass({
             this.addChild(particle);
         }
     },
-    
+
     update: function(){
         this.timer -= 1;
         if (this.timer <= 0){
