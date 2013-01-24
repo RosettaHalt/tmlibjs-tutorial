@@ -41,7 +41,7 @@ tm.main(function(){
         update: function(){
             this.sprite.x += this.sprite.speed;
             if(this.sprite.x < 0 || this.sprite.x > app.width){ this.sprite.speed *= -1; }
-            
+
             // クリックなどの判定
             if( app.keyboard.getKeyDown("Z") || app.pointing.getPointingEnd() ){
                 console.log("クリック終了 or Zキー押したよ！ 位置は(" + "x: " + app.pointing.x + ", y: " + app.pointing.y + ")");
@@ -54,7 +54,7 @@ tm.main(function(){
             else if( app.pointing.getPointingStart() ){
                 console.log("クリック開始したよ！ 位置は(" + "x: " + app.pointing.x + ", y: " + app.pointing.y + ")");
             }
-            
+
             if( app.pointing.getPointing() ){
                 console.log("クリックしてるよ！");
             }
