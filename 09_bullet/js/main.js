@@ -14,7 +14,7 @@ tm.main(function(){
     // app.enableStats();
     app.fitWindow();
 
-    app.replaceScene(TitleScene());  // 毎回タイトルシーンを経由するのはめんどうなので最初からメインシーンへ
+    app.replaceScene(MainScene());  // 毎回タイトルシーンを経由するのはめんどうなので最初からメインシーンへ
 
     app.run();
 });
