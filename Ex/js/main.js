@@ -253,7 +253,7 @@ tm.main(function(){
             this.scoreLabel.text = "Score : " + userData.score;
 
             // タイトルボタン
-            var titleButton = tm.app.iPhoneButton(120, 60, "black");    // ボタンの読み込み
+            var titleButton = tm.app.GlossyButton(120, 60, "black");    // ボタンの読み込み
             titleButton.setPosition(120,640);   // ボタンの位置
             titleButton.label.text = "Title";   // ボタンのテキスト
             this.addChild(titleButton);
@@ -272,7 +272,7 @@ tm.main(function(){
                 hashtags: "tmlibjs",
                 url: "http://bit.ly/O7R7gh",
             });
-            var tweetButton = tm.app.iPhoneButton(120, 60, "black");
+            var tweetButton = tm.app.GlossyButton(120, 60, "black");
             tweetButton.setPosition(360, 640);   // ボタンの位置
             tweetButton.label.text = "Tweet";   // ボタンのテキスト
             this.addChild(tweetButton);

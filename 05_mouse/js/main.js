@@ -13,7 +13,7 @@ tm.preload(function(){
 tm.main(function(){
     app = tm.app.CanvasApp("#world");
     app.background = "black";
-    app.enableStats();
+    // app.enableStats();
     app.fitWindow();
 
     app.replaceScene(TitleScene());
@@ -31,8 +31,7 @@ tm.main(function(){
 
 
             // 画像の読み込み
-            this.sprite = tm.app.Sprite(128, 128);
-            this.sprite.setImage(tm.graphics.TextureManager.get("kenkyo"));
+            this.sprite = tm.app.Sprite(128, 128, "kenkyo");
             this.sprite.setPosition(240, 360);
             this.sprite.speed = 5;
             this.addChild(this.sprite);

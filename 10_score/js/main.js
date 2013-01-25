@@ -1,11 +1,11 @@
 /*
  ラベルの表示
  tm.app.Label
- 
+
  スコアの管理
  tm.util.DataManager
  */
- 
+
 // ユーザーのデータ
 tm.util.DataManager.set("userData", {
     score: 0
@@ -14,9 +14,9 @@ tm.util.DataManager.set("userData", {
 tm.main(function(){
     app = tm.app.CanvasApp("#world");
     app.background = "black";
-    app.enableStats();
+    // app.enableStats();
     app.fitWindow();
-    
+
 	// ユーザーデータの生成
     userData = tm.util.DataManager.get("userData");
 
@@ -63,10 +63,10 @@ tm.main(function(){
         c.setColorStyle("white", "rgba(200, 200, 200, 0.9)");
         c.fillPolygon(0, 0, 20, 3, 270);
         c.strokePolygon(0, 0, 20, 3, 270);
-    
+
         return c;
     })();
-    
+
     // エネミーのイメージ
     var enemyImage = (function(){
         var c = tm.graphics.Canvas();
@@ -78,7 +78,7 @@ tm.main(function(){
         c.strokeStar(0, 0, 20, 16, 0.6);
         return c;
     })();
-    
+
     // 弾のイメージ
     var bulletImage = (function(){
         var c = tm.graphics.Canvas();
@@ -86,7 +86,7 @@ tm.main(function(){
         c.setTransformCenter();
         c.setColorStyle("white", "white");
         c.fillCircle(0, 0, 5);
-    
+
         return c;
     })();
 
@@ -95,10 +95,10 @@ tm.main(function(){
 
         init: function(){
             this.superInit();
-            
+
             // スコアの初期化
             userData.score = 0;
-            
+
             // スコアのラベル
             this.scoreLabel = tm.app.Label(app.width, 64);
             this.scoreLabel.position.set(240, 64);
@@ -112,7 +112,7 @@ tm.main(function(){
             this.player = Player(playerImage);
             this.player.position.set( app.width/2, 600 );
             this.addChild(this.player);
-            
+
             // 敵用グループ
             this.enemyGroup = null;
             this.enemyGroup = tm.app.CanvasElement();
@@ -173,10 +173,11 @@ tm.main(function(){
  * プレイヤークラス
  */
 var Player = tm.createClass({
-    superClass: tm.app.Sprite,
+    superClass: tm.app.Shape,
 
     init: function(img){
-        this.superInit(40, 40, img);
+        this.superInit(40, 40);
+        this.canvas = img;
         this.speed = 0;
         this.velocity = tm.geom.Vector2(0, 0);
     },
@@ -201,16 +202,17 @@ var Player = tm.createClass({
  * エネミークラス
  */
 var Enemy = tm.createClass({
-    superClass: tm.app.Sprite,
+    superClass: tm.app.Shape,
 
     init: function(img){
-        this.superInit(40, 40, img);
+        this.superInit(40, 40);
+        this.canvas = img;
     },
 
     update: function(){
         this.y += 4;
         this.rotation -= 4; // 回転
-        
+
         if(this.y > app.height+this.height){ this.remove(); }
     }
 
@@ -220,15 +222,16 @@ var Enemy = tm.createClass({
  * 弾クラス
  */
 var Bullet = tm.createClass({
-    superClass: tm.app.Sprite,
+    superClass: tm.app.Shape,
 
     init: function(img){
-        this.superInit(10, 10, img);
+        this.superInit(10, 10);
+        this.canvas = img;
     },
 
     update: function(){
         this.y -= 16;
-        
+
         if(this.y <= -this.height){ this.remove(); }
     }
 });

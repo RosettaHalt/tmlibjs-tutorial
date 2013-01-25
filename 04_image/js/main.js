@@ -4,7 +4,7 @@
  tm.preload(function(){ });
  tm.graphics.TextureManager.add();
  tm.graphics.TextureManager.get();
- 
+
  画像の移動
  反射させる
  app.width
@@ -18,7 +18,7 @@ tm.preload(function(){
 tm.main(function(){
     app = tm.app.CanvasApp("#world");
     app.background = "black";
-    app.enableStats();
+    // app.enableStats();
     app.fitWindow();
 
     app.replaceScene(TitleScene());
@@ -35,8 +35,7 @@ tm.main(function(){
             this.superInit();
 
             // 画像の読み込み
-            this.sprite = tm.app.Sprite(128, 128);  // 引数は幅と高さ(width, height)
-            this.sprite.setImage(tm.graphics.TextureManager.get("kenkyo"));   // 画像を読み込む
+            this.sprite = tm.app.Sprite(128, 128,"kenkyo");  // 引数は幅と高さ,画像のファイル名(width, height, texture)
             this.sprite.setPosition(240, 360);  // 位置(x, y)を格納
             this.sprite.speed = 5;  // 移動量を設定
             this.addChild(this.sprite); // 親要素(この場合はTitleSceneクラス)に追加

@@ -11,10 +11,10 @@ tm.preload(function(){
 tm.main(function(){
     app = tm.app.CanvasApp("#world");
     app.background = "black";
-    app.enableStats();
+    // app.enableStats();
     app.fitWindow();
 
-    app.replaceScene(MainScene());  // 毎回タイトルシーンを経由するのはめんどうなので最初からメインシーンへ
+    app.replaceScene(TitleScene());  // 毎回タイトルシーンを経由するのはめんどうなので最初からメインシーンへ
 
     app.run();
 });
@@ -28,8 +28,7 @@ tm.main(function(){
             this.superInit();
 
             // 画像の読み込み
-            this.sprite = tm.app.Sprite(128, 128);
-            this.sprite.setImage(tm.graphics.TextureManager.get("kenkyo"));
+            this.sprite = tm.app.Sprite(128, 128, "kenkyo");
             this.sprite.setPosition(240, 360);
             this.sprite.speed = 5;
             this.addChild(this.sprite);
@@ -38,7 +37,7 @@ tm.main(function(){
         update: function(){
             this.sprite.x += this.sprite.speed;
             if(this.sprite.x < 0 || this.sprite.x > app.width){ this.sprite.speed *= -1; }
-            
+
             if( app.keyboard.getKeyDown("Z") || app.pointing.getPointingEnd() ){
                 if(this.sprite.isHitPoint(app.pointing.x, app.pointing.y)){
                     console.log("Hit");
@@ -61,10 +60,10 @@ tm.main(function(){
         c.setColorStyle("white", "rgba(200, 200, 200, 0.9)");
         c.fillPolygon(0, 0, 20, 3, 270);
         c.strokePolygon(0, 0, 20, 3, 270);
-    
+
         return c;
     })();
-    
+
     // エネミーのイメージ
     var enemyImage = (function(){
         var c = tm.graphics.Canvas();
@@ -76,7 +75,7 @@ tm.main(function(){
         c.strokeStar(0, 0, 20, 16, 0.6);
         return c;
     })();
-    
+
     // 弾のイメージ
     var bulletImage = (function(){
         var c = tm.graphics.Canvas();
@@ -84,7 +83,7 @@ tm.main(function(){
         c.setTransformCenter();
         c.setColorStyle("white", "white");
         c.fillCircle(0, 0, 5);
-    
+
         return c;
     })();
 
@@ -98,7 +97,7 @@ tm.main(function(){
             this.player = Player(playerImage);
             this.player.position.set( app.width/2, 600 );
             this.addChild(this.player);
-            
+
             // 敵用グループ
             this.enemyGroup = null;
             this.enemyGroup = tm.app.CanvasElement();
@@ -157,10 +156,11 @@ tm.main(function(){
  * プレイヤークラス
  */
 var Player = tm.createClass({
-    superClass: tm.app.Sprite,
+    superClass: tm.app.Shape,
 
     init: function(img){
-        this.superInit(40, 40, img);
+        this.superInit(40, 40);
+        this.canvas = img;
         this.speed = 0;
         this.velocity = tm.geom.Vector2(0, 0);
     },
@@ -185,16 +185,17 @@ var Player = tm.createClass({
  * エネミークラス
  */
 var Enemy = tm.createClass({
-    superClass: tm.app.Sprite,
+    superClass: tm.app.Shape,
 
     init: function(img){
-        this.superInit(40, 40, img);
+        this.superInit(40, 40);
+        this.canvas = img;
     },
 
     update: function(){
         this.y += 4;
         this.rotation -= 4; // 回転
-        
+
         if(this.y > app.height+this.height){ this.remove(); }
     }
 
@@ -204,15 +205,16 @@ var Enemy = tm.createClass({
  * 弾クラス
  */
 var Bullet = tm.createClass({
-    superClass: tm.app.Sprite,
+    superClass: tm.app.Shape,
 
     init: function(img){
-        this.superInit(10, 10, img);
+        this.superInit(10, 10);
+        this.canvas = img;
     },
 
     update: function(){
         this.y -= 16;
-        
+
         // 画面外に出たら this.remove(); で自分を削除
         if(this.y <= -this.height){ this.remove(); }
     }

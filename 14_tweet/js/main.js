@@ -20,7 +20,7 @@ tm.util.DataManager.set("userData", {
 tm.main(function(){
     app = tm.app.CanvasApp("#world");
     app.background = "black";
-    app.enableStats();
+    // app.enableStats();
     app.fitWindow();
 
 	// ユーザーデータの生成
@@ -236,7 +236,7 @@ tm.main(function(){
             this.scoreLabel.text = "Score : " + userData.score;
 
             // タイトルボタン
-            var titleButton = tm.app.iPhoneButton(120, 60, "black");    // ボタンの読み込み
+            var titleButton = tm.app.GlossyButton(120, 60, "black");    // ボタンの読み込み
             titleButton.setPosition(120,640);   // ボタンの位置
             titleButton.label.text = "Title";   // ボタンのテキスト
             this.addChild(titleButton);
@@ -251,7 +251,7 @@ tm.main(function(){
                 hashtags: "tmlibjs",
                 url: "http://bit.ly/O7R7gh",
             });
-            var tweetButton = tm.app.iPhoneButton(120, 60, "black");
+            var tweetButton = tm.app.GlossyButton(120, 60, "black");
             tweetButton.setPosition(360, 640);   // ボタンの位置
             tweetButton.label.text = "Tweet";   // ボタンのテキスト
             this.addChild(tweetButton);
@@ -312,10 +312,11 @@ tm.main(function(){
  * プレイヤークラス
  */
 var Player = tm.createClass({
-    superClass: tm.app.Sprite,
+    superClass: tm.app.Shape,
 
     init: function(img){
-        this.superInit(40, 40, img);
+        this.superInit(40, 40);
+        this.canvas = img;
         this.speed = 0;
         this.velocity = tm.geom.Vector2(0, 0);
     },
@@ -340,10 +341,11 @@ var Player = tm.createClass({
  * エネミークラス
  */
 var Enemy = tm.createClass({
-    superClass: tm.app.Sprite,
+    superClass: tm.app.Shape,
 
     init: function(img){
-        this.superInit(40, 40, img);
+        this.superInit(40, 40);
+        this.canvas = img;
     },
 
     update: function(){
@@ -359,10 +361,11 @@ var Enemy = tm.createClass({
  * 弾クラス
  */
 var Bullet = tm.createClass({
-    superClass: tm.app.Sprite,
+    superClass: tm.app.Shape,
 
     init: function(img){
-        this.superInit(10, 10, img);
+        this.superInit(10, 10);
+        this.canvas = img;
     },
 
     update: function(){

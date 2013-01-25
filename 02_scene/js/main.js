@@ -3,7 +3,7 @@
  tm.app.Scene();
  scene.update = function(){ }
  app.replaceScene(scene);
- 
+
  タッチ判定
  app.pointing.getPointingEnd();
  */
@@ -11,7 +11,7 @@
 tm.main(function(){
     app = tm.app.CanvasApp("#world");
     app.background = "black";
-    app.enableStats();
+    // app.enableStats();
     app.fitWindow();
 
     // シーンの生成
