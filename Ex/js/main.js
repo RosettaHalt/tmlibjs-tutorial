@@ -468,9 +468,9 @@ var Crash = tm.createClass({
         var self = this;
         for(var i = 0; i < 16; ++i){
             var particle = tm.app.Shape(40, 40);
+            particle.canvas = img;
             particle.scaleX = particle.scaleY = 0.5;
             particle.v = tm.geom.Vector2.random(0, 360, 2);
-            particle.canvas = img;
             particle.blendMode = "lighter";
             particle.update = function(){
                 this.x += this.v.x;
